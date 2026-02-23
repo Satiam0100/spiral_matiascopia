@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 
-const navLeft = ['HOME', 'SERVICES', 'PORTFOLIO'];
+const navLeft = ['HOME', 'SERVICES', 'PORTFOLIO', 'ABOUT'];
 const navRight = ['THE STUDIO', 'BOOK NOW', 'CONTACT US'];
 
 const SPIRAL_LOGO_WHITE =
@@ -13,12 +13,16 @@ const leftHref = (item) => {
   if (key === 'home') return '/';
   if (key === 'services') return '/services';
   if (key === 'portfolio') return '/portfolio';
+  if (key === 'about') return '/about';
   return `/#${key}`;
 };
 
+const sectionHref = (item) => `/#${item.toLowerCase().replace(/\s+/g, '-')}`;
+
 const Footer = () => {
   return (
-    <footer className={styles.footer}>
+    <footer id="contact-us" className={styles.footer}>
+      <div id="book-now" aria-hidden />
       <div className={styles.footerInner}>
         <div className={styles.footerGrid}>
           <div className={styles.footerCol}>
@@ -34,7 +38,7 @@ const Footer = () => {
               <ul className={styles.footerNav}>
                 {navRight.map((item) => (
                   <li key={item}>
-                    <a href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}>{item}</a>
+                    <Link to={sectionHref(item)}>{item}</Link>
                   </li>
                 ))}
               </ul>
@@ -54,8 +58,22 @@ const Footer = () => {
           <div className={`${styles.footerCol} ${styles.footerColRight}`}>
             <h3 className={styles.footerLabel}>LETS CONNECT!</h3>
             <div className={styles.footerConnectLinks}>
-              <a href="#" className={styles.footerLink}>INSTAGRAM</a>
-              <a href="#" className={styles.footerLink}>TIKTOK</a>
+              <a
+                href="https://www.instagram.com/spiral.mstudio/"
+                className={styles.footerLink}
+                target="_blank"
+                rel="noreferrer"
+              >
+                INSTAGRAM
+              </a>
+              <a
+                href="https://www.tiktok.com/@spiral.mstudio"
+                className={styles.footerLink}
+                target="_blank"
+                rel="noreferrer"
+              >
+                TIKTOK
+              </a>
             </div>
             <p className={styles.footerEmail}>EMAIL: ANDREA@SPIRALMSTUDIO.COM</p>
           </div>

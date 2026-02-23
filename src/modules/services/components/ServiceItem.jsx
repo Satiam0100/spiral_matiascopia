@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/services.module.css';
 
 const ServiceItem = ({ id, title, description, imageUrl }) => {
@@ -22,9 +23,9 @@ const ServiceItem = ({ id, title, description, imageUrl }) => {
           loading="lazy"
           decoding="async"
         />
-        <button type="button" className={styles.packagesBtn}>
+        <Link to="/#book-now" className={styles.packagesBtn}>
           PACKAGES
-        </button>
+        </Link>
       </div>
     </article>
   );

@@ -57,7 +57,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  text-align: justify;
   text-decoration: none;
 }
 
@@ -84,7 +84,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1920') center/cover no-repeat;
+  background: url('/images/photos/DSC01989.jpg') 30% 22% / cover no-repeat;
   opacity: 0.5;
   filter: grayscale(40%) brightness(0.5);
 }
@@ -98,7 +98,7 @@
 .heroContent {
   position: relative;
   z-index: 1;
-  text-align: center;
+  text-align: justify;
 }
 
 .heroTitle {
@@ -132,6 +132,9 @@
   width: 100%;
   margin: 0;
   border-radius: 52px 52px 0 0;
+  margin-top: -52px;
+  position: relative;
+  z-index: 2;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.12),
@@ -144,7 +147,7 @@
   padding: 40 px;
   background: transparent;
   border-radius: 0;
-  text-align: center;
+  text-align: justify;
 }
 
 .whatWeDoLabel {
@@ -181,6 +184,10 @@
   cursor: pointer;
   border-radius: 8px;
   transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .workWithUsBtn:hover {
@@ -266,7 +273,7 @@
 }
 
 .servicesRight {
-  text-align: right;
+  text-align: justify;
 }
 
 .servicesRight .sectionLabel {
@@ -322,6 +329,10 @@
   letter-spacing: 0.15em;
   cursor: pointer;
   transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .learnMoreBtn:hover {
@@ -382,12 +393,12 @@
 
 .recentWorkTitleTop {
   display: block;
-  text-align: left;
+  text-align: justify;
 }
 
 .recentWorkTitleBottom {
   display: block;
-  text-align: right;
+  text-align: justify;
   margin-top: -0.12em;
 }
 
@@ -409,6 +420,10 @@
   cursor: pointer;
   transition: var(--transition);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .portfolioBtn:hover {
@@ -561,14 +576,14 @@
 
 .footerColRight {
   align-items: flex-end;
-  text-align: right;
+  text-align: justify;
 }
 
 .footerColCenter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  text-align: justify;
 }
 
 .footerLabel {
@@ -643,7 +658,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.15rem 0 1.25rem 0;
-  text-align: center;
+  text-align: justify;
 }
 
 .copyright {
@@ -673,7 +688,7 @@
   }
 
   .servicesRight {
-    text-align: left;
+    text-align: justify;
   }
 
   .servicesRight .serviceRow {
@@ -682,7 +697,7 @@
 
   .footerGrid {
     grid-template-columns: 1fr;
-    text-align: center;
+    text-align: justify;
   }
 
   .footerColCenter {

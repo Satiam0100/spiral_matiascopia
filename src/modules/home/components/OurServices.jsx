@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 
 const services = [
@@ -24,7 +25,9 @@ const OurServices = () => {
           <h2 className={styles.sectionLabel}>OUR SERVICES</h2>
           {services.map((s) => (
             <div key={s.id} className={styles.serviceRow}>
-              <button type="button" className={styles.learnMoreBtn}>LEARN MORE</button>
+              <Link to="/services" className={styles.learnMoreBtn}>
+                LEARN MORE
+              </Link>
             </div>
           ))}
         </div>

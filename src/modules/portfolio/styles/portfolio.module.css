@@ -53,12 +53,12 @@
 
 .heroTitleTop {
   display: block;
-  text-align: left;
+  text-align: justify;
 }
 
 .heroTitleBottom {
   display: block;
-  text-align: right;
+  text-align: justify;
   margin-top: -0.12em;
 }
 
@@ -71,7 +71,7 @@
   width: min(900px, 100%);
   margin: 0 auto;
   padding: clamp(2.2rem, 5.5vh, 3.4rem) clamp(1.25rem, 4vw, 2.5rem);
-  text-align: center;
+  text-align: justify;
 }
 
 .introKicker {
@@ -129,7 +129,7 @@
 .mediaHeading {
   margin: 0;
   padding: 0.85rem 1.25rem 0.2rem 1.25rem;
-  text-align: center;
+  text-align: justify;
   font-family: 'Luxurious Script', cursive;
   font-weight: 400;
   font-size: clamp(3.2rem, 8vw, 6.1rem);
@@ -252,7 +252,7 @@
   display: grid;
   justify-items: center;
   gap: 1.15rem;
-  text-align: center;
+  text-align: justify;
 }
 
 .preFooterCtaTitle {
@@ -278,6 +278,10 @@
   cursor: pointer;
   border-radius: 6px;
   transition: transform 160ms ease, background 160ms ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .preFooterCtaBtn:hover {

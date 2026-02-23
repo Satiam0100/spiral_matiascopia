@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/portfolio.module.css';
 
 const PortfolioPreFooter = () => {
@@ -12,9 +13,9 @@ const PortfolioPreFooter = () => {
             <br />
             BRAND STAND OUT?
           </h2>
-          <button type="button" className={styles.preFooterCtaBtn}>
+          <Link to="/#contact-us" className={styles.preFooterCtaBtn}>
             LET&apos;S TALK
-          </button>
+          </Link>
         </div>
       </section>
 

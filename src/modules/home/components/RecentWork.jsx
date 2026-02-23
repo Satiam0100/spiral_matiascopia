@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 
 const RecentWork = () => {
@@ -11,7 +12,9 @@ const RecentWork = () => {
           <span className={styles.recentWorkTitleBottom}>WORK</span>
         </h1>
         <div className={styles.recentWorkCta}>
-          <button type="button" className={styles.portfolioBtn}>PORTFOLIO</button>
+          <Link to="/portfolio" className={styles.portfolioBtn}>
+            PORTFOLIO
+          </Link>
         </div>
       </div>
     </section>

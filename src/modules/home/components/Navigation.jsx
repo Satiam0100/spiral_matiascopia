@@ -13,8 +13,11 @@ const leftLinkTo = (item) => {
   if (key === 'home') return '/';
   if (key === 'services') return '/services';
   if (key === 'portfolio') return '/portfolio';
+  if (key === 'about') return '/about';
   return `/#${key}`;
 };
+
+const sectionLinkTo = (item) => `/#${item.toLowerCase().replace(/\s+/g, '-')}`;
 
 const Navigation = () => {
   return (
@@ -39,7 +42,7 @@ const Navigation = () => {
         <ul className={styles.navRight}>
           {rightLinks.map((item) => (
             <li key={item}>
-              <a href={`#${item.toLowerCase().replace(' ', '-')}`}>{item}</a>
+              <Link to={sectionLinkTo(item)}>{item}</Link>
             </li>
           ))}
         </ul>

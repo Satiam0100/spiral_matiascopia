@@ -18,6 +18,10 @@ const leftLinkTo = (item) => {
 };
 
 const sectionLinkTo = (item) => `/#${item.toLowerCase().replace(/\s+/g, '-')}`;
+const rightLinkTo = (item) => {
+  if (item === 'The Studio') return '/studio';
+  return sectionLinkTo(item);
+};
 
 const Navigation = () => {
   return (
@@ -42,7 +46,7 @@ const Navigation = () => {
         <ul className={styles.navRight}>
           {rightLinks.map((item) => (
             <li key={item}>
-              <Link to={sectionLinkTo(item)}>{item}</Link>
+              <Link to={rightLinkTo(item)}>{item}</Link>
             </li>
           ))}
         </ul>

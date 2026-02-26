@@ -6,6 +6,7 @@ import ServicesPage from './modules/services/pages/ServicesPage.jsx';
 import PortfolioPage from './modules/portfolio/pages/PortfolioPage.jsx';
 import AboutPage from './modules/about/pages/AboutPage.jsx';
 import StudioPage from './modules/studio/pages/StudioPage.jsx';
+import BookNowPage from './modules/bookNow/pages/BookNowPage.jsx';
 import ScrollToHash from './components/ScrollToHash.jsx';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/studio" element={<StudioPage />} />
+        <Route path="/book-now" element={<BookNowPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

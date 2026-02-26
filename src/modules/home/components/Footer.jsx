@@ -17,7 +17,12 @@ const leftHref = (item) => {
   return `/#${key}`;
 };
 
-const sectionHref = (item) => `/#${item.toLowerCase().replace(/\s+/g, '-')}`;
+const sectionHref = (item) => {
+  const key = item.toLowerCase().replace(/\s+/g, '-');
+  if (key === 'the-studio') return '/studio';
+  if (key === 'book-now') return '/book-now';
+  return `/#${key}`;
+};
 
 const Footer = () => {
   return (

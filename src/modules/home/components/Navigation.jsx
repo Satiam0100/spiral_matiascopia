@@ -20,6 +20,7 @@ const leftLinkTo = (item) => {
 const sectionLinkTo = (item) => `/#${item.toLowerCase().replace(/\s+/g, '-')}`;
 const rightLinkTo = (item) => {
   if (item === 'The Studio') return '/studio';
+  if (item === 'Book Now') return '/book-now';
   return sectionLinkTo(item);
 };
 

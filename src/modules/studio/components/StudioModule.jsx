@@ -177,7 +177,7 @@ const StudioModule = () => {
             <span className={styles.ctaCaps}>CREATE YOUR NEXT</span>
             <span className={styles.ctaScript}>Masterpiece</span>
           </h2>
-          <Link to="/#book-now" className={styles.ctaButton}>
+          <Link to="/book-now" className={styles.ctaButton}>
             BOOK NOW!
           </Link>
         </div>

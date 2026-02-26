@@ -23,7 +23,7 @@ const ServiceItem = ({ id, title, description, imageUrl }) => {
           loading="lazy"
           decoding="async"
         />
-        <Link to="/#book-now" className={styles.packagesBtn}>
+        <Link to="/book-now" className={styles.packagesBtn}>
           PACKAGES
         </Link>
       </div>

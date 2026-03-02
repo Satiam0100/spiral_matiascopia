@@ -12,6 +12,22 @@
 .header {
   background: #000;
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition:
+    background 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease,
+    backdrop-filter 200ms ease;
+}
+
+.headerScrolled {
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
 }
 
 .nav {

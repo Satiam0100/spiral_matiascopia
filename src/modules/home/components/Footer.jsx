@@ -52,13 +52,13 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-              <ul className={styles.footerNav}>
+              <ol className={`${styles.footerNav} ${styles.footerNavQuick}`}>
                 {navRight.map((item) => (
                   <li key={item}>
                     <Link to={sectionHref(item)}>{item}</Link>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
           </div>
           <div className={styles.footerColCenter}>

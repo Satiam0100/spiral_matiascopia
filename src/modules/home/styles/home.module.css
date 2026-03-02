@@ -45,12 +45,34 @@
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   font-weight: 400;
-  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0);
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .navLeft a:hover,
 .navRight a:hover {
-  color: var(--text-secondary);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset;
+}
+
+.navLeft a:focus-visible,
+.navRight a:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 3px;
 }
 
 .logoBlock {
@@ -662,11 +684,32 @@
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0);
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .footerNav a:hover {
   color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset;
+}
+
+.footerNav a:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 3px;
 }
 
 .footerLink {
@@ -676,11 +719,32 @@
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0);
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .footerLink:hover {
   color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.16) inset;
+}
+
+.footerLink:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 3px;
 }
 
 .footerConnectLinks {

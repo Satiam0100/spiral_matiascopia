@@ -55,6 +55,10 @@ const isWeekend = (d) => {
   return dow === 0 || dow === 6;
 };
 
+const isValidEmail = (value) => /^\S+@\S+\.\S+$/.test(value);
+
+const normalizePhoneDigits = (value) => value.replace(/[^\d]/g, '');
+
 const getMonthGrid = (monthDate) => {
   const first = startOfMonth(monthDate);
   const daysInMonth = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
@@ -80,6 +84,13 @@ const BookNowModule = () => {
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [formValues, setFormValues] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+  });
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const slideCount = carouselSlides.length;
   const activeSlide = carouselSlides[slideIdx] ?? carouselSlides[0];
@@ -122,6 +133,7 @@ const BookNowModule = () => {
     const subject = `Studio Rental - ${planLabel}`;
     const dateText = selectedDate ? selectedDate.toDateString() : '(not selected)';
     const timeText = selectedTime ?? '(not selected)';
+    const { firstName, lastName, phone, email } = formValues;
 
     const body = [
       'Hi Spiral,',
@@ -132,13 +144,51 @@ const BookNowModule = () => {
       `Date: ${dateText}`,
       `Time: ${timeText}`,
       '',
+      'My information:',
+      `First name: ${firstName || '(not provided)'}`,
+      `Last name: ${lastName || '(not provided)'}`,
+      `Phone number: ${phone || '(not provided)'}`,
+      `Email: ${email || '(not provided)'}`,
+      '',
       'Thanks!',
     ].join('\n');
 
     return `mailto:${BOOK_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }, [activePlan, hours, selectedDate, selectedTime]);
+  }, [activePlan, formValues, hours, selectedDate, selectedTime]);
 
   const monthWeeks = useMemo(() => getMonthGrid(month), [month]);
+
+  const validation = useMemo(() => {
+    const errors = {};
+
+    if (!activePlan) errors.activePlan = 'Selecciona un plan (Weekday o Weekend).';
+    if (!selectedDate) errors.selectedDate = 'Selecciona una fecha.';
+    if (!selectedTime) errors.selectedTime = 'Selecciona una hora.';
+
+    const firstName = formValues.firstName.trim();
+    const lastName = formValues.lastName.trim();
+    const email = formValues.email.trim();
+    const phoneDigits = normalizePhoneDigits(formValues.phone);
+
+    if (!firstName) errors.firstName = 'Ingresa tu nombre.';
+    if (!lastName) errors.lastName = 'Ingresa tu apellido.';
+
+    if (!email) errors.email = 'Ingresa tu email.';
+    else if (!isValidEmail(email)) errors.email = 'Ingresa un email válido.';
+
+    if (!phoneDigits) errors.phone = 'Ingresa tu teléfono.';
+    else if (phoneDigits.length < 10) errors.phone = 'Ingresa un teléfono válido (mín. 10 dígitos).';
+
+    return { errors, isValid: Object.keys(errors).length === 0 };
+  }, [activePlan, formValues, selectedDate, selectedTime]);
+
+  const showErrors = submitAttempted;
+
+  const onContinue = () => {
+    setSubmitAttempted(true);
+    if (!validation.isValid) return;
+    window.location.href = mailtoHref;
+  };
 
   const timeSlots = useMemo(
     () => [
@@ -363,23 +413,132 @@ const BookNowModule = () => {
               <div className={styles.infoForm}>
                 <label className={styles.fieldRow}>
                   <span className={styles.fieldLabel}>FIRST NAME</span>
-                  <input className={styles.fieldInput} type="text" name="firstName" />
+                  <div className={styles.fieldControl}>
+                    <input
+                      className={`${styles.fieldInput} ${
+                        showErrors && validation.errors.firstName ? styles.fieldInputError : ''
+                      }`}
+                      type="text"
+                      name="firstName"
+                      value={formValues.firstName}
+                      onChange={(e) =>
+                        setFormValues((v) => ({
+                          ...v,
+                          firstName: e.target.value,
+                        }))
+                      }
+                      aria-invalid={showErrors && !!validation.errors.firstName}
+                      aria-describedby={validation.errors.firstName ? 'booknow-firstname-error' : undefined}
+                      autoComplete="given-name"
+                    />
+                    {showErrors && validation.errors.firstName ? (
+                      <div
+                        id="booknow-firstname-error"
+                        className={styles.fieldError}
+                        role="alert"
+                      >
+                        {validation.errors.firstName}
+                      </div>
+                    ) : null}
+                  </div>
                 </label>
                 <label className={styles.fieldRow}>
                   <span className={styles.fieldLabel}>LAST NAME</span>
-                  <input className={styles.fieldInput} type="text" name="lastName" />
+                  <div className={styles.fieldControl}>
+                    <input
+                      className={`${styles.fieldInput} ${
+                        showErrors && validation.errors.lastName ? styles.fieldInputError : ''
+                      }`}
+                      type="text"
+                      name="lastName"
+                      value={formValues.lastName}
+                      onChange={(e) =>
+                        setFormValues((v) => ({
+                          ...v,
+                          lastName: e.target.value,
+                        }))
+                      }
+                      aria-invalid={showErrors && !!validation.errors.lastName}
+                      aria-describedby={validation.errors.lastName ? 'booknow-lastname-error' : undefined}
+                      autoComplete="family-name"
+                    />
+                    {showErrors && validation.errors.lastName ? (
+                      <div id="booknow-lastname-error" className={styles.fieldError} role="alert">
+                        {validation.errors.lastName}
+                      </div>
+                    ) : null}
+                  </div>
                 </label>
                 <label className={styles.fieldRow}>
                   <span className={styles.fieldLabel}>PHONE NUMBER</span>
-                  <input className={styles.fieldInput} type="tel" name="phone" />
+                  <div className={styles.fieldControl}>
+                    <input
+                      className={`${styles.fieldInput} ${
+                        showErrors && validation.errors.phone ? styles.fieldInputError : ''
+                      }`}
+                      type="tel"
+                      name="phone"
+                      value={formValues.phone}
+                      onChange={(e) =>
+                        setFormValues((v) => ({
+                          ...v,
+                          phone: e.target.value,
+                        }))
+                      }
+                      aria-invalid={showErrors && !!validation.errors.phone}
+                      aria-describedby={validation.errors.phone ? 'booknow-phone-error' : undefined}
+                      autoComplete="tel"
+                      inputMode="tel"
+                    />
+                    {showErrors && validation.errors.phone ? (
+                      <div id="booknow-phone-error" className={styles.fieldError} role="alert">
+                        {validation.errors.phone}
+                      </div>
+                    ) : null}
+                  </div>
                 </label>
                 <label className={styles.fieldRow}>
                   <span className={styles.fieldLabel}>EMAIL</span>
-                  <input className={styles.fieldInput} type="email" name="email" />
+                  <div className={styles.fieldControl}>
+                    <input
+                      className={`${styles.fieldInput} ${
+                        showErrors && validation.errors.email ? styles.fieldInputError : ''
+                      }`}
+                      type="email"
+                      name="email"
+                      value={formValues.email}
+                      onChange={(e) =>
+                        setFormValues((v) => ({
+                          ...v,
+                          email: e.target.value,
+                        }))
+                      }
+                      aria-invalid={showErrors && !!validation.errors.email}
+                      aria-describedby={validation.errors.email ? 'booknow-email-error' : undefined}
+                      autoComplete="email"
+                      inputMode="email"
+                    />
+                    {showErrors && validation.errors.email ? (
+                      <div id="booknow-email-error" className={styles.fieldError} role="alert">
+                        {validation.errors.email}
+                      </div>
+                    ) : null}
+                  </div>
                 </label>
               </div>
 
-              <button type="button" className={styles.continueButton}>
+              {showErrors && (validation.errors.activePlan || validation.errors.selectedDate || validation.errors.selectedTime) ? (
+                <div className={styles.formSummaryError} role="alert">
+                  {validation.errors.activePlan ?? validation.errors.selectedDate ?? validation.errors.selectedTime}
+                </div>
+              ) : null}
+
+              <button
+                type="button"
+                className={styles.continueButton}
+                onClick={onContinue}
+                disabled={!validation.isValid}
+              >
                 CONTINUE TO PAYMENT
               </button>
 

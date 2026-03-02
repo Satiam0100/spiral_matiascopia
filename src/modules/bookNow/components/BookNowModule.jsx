@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/bookNow.module.css';
 
 const CASA_LOGO_WHITE =
@@ -59,6 +59,25 @@ const isValidEmail = (value) => /^\S+@\S+\.\S+$/.test(value);
 
 const normalizePhoneDigits = (value) => value.replace(/[^\d]/g, '');
 
+const preloadImage = async (src) => {
+  if (!src) return false;
+  try {
+    const img = new Image();
+    img.src = src;
+    if (img.decode) {
+      await img.decode();
+      return true;
+    }
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const getMonthGrid = (monthDate) => {
   const first = startOfMonth(monthDate);
   const daysInMonth = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
@@ -94,8 +113,74 @@ const BookNowModule = () => {
 
   const slideCount = carouselSlides.length;
   const activeSlide = carouselSlides[slideIdx] ?? carouselSlides[0];
+  const loadedSlidesRef = useRef(new Set());
+  const [renderedSlide, setRenderedSlide] = useState(activeSlide);
+  const [isCarouselLoading, setIsCarouselLoading] = useState(false);
   const goPrev = () => setSlideIdx((i) => (i - 1 + slideCount) % slideCount);
   const goNext = () => setSlideIdx((i) => (i + 1) % slideCount);
+
+  useEffect(() => {
+    // Preload above-the-fold imagery as early as possible.
+    preloadImage(HERO_IMAGE);
+    preloadImage(carouselSlides[0]);
+
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(
+          () => {
+            carouselSlides.forEach((src) => {
+              if (!loadedSlidesRef.current.has(src)) {
+                preloadImage(src).then((ok) => {
+                  if (ok) loadedSlidesRef.current.add(src);
+                });
+              }
+            });
+          },
+          { timeout: 1800 }
+        )
+      : window.setTimeout(() => {
+          carouselSlides.forEach((src) => {
+            if (!loadedSlidesRef.current.has(src)) {
+              preloadImage(src).then((ok) => {
+                if (ok) loadedSlidesRef.current.add(src);
+              });
+            }
+          });
+        }, 900);
+
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const current = activeSlide;
+    const next = carouselSlides[(slideIdx + 1) % slideCount];
+    const prev = carouselSlides[(slideIdx - 1 + slideCount) % slideCount];
+
+    [current, next, prev].forEach((src) => {
+      if (!src || loadedSlidesRef.current.has(src)) return;
+      preloadImage(src).then((ok) => {
+        if (ok) loadedSlidesRef.current.add(src);
+      });
+    });
+
+    if (!current || renderedSlide === current) return () => {};
+    setIsCarouselLoading(true);
+
+    preloadImage(current).then((ok) => {
+      if (cancelled) return;
+      if (ok) loadedSlidesRef.current.add(current);
+      setRenderedSlide(current);
+      setIsCarouselLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeSlide, renderedSlide, slideIdx, slideCount]);
 
   const money = useMemo(
     () =>
@@ -562,9 +647,12 @@ const BookNowModule = () => {
           </button>
 
           <div
-            className={styles.carouselStage}
-            style={{ backgroundImage: `url(${activeSlide})` }}
+            className={`${styles.carouselStage} ${
+              isCarouselLoading ? styles.carouselStageLoading : ''
+            }`}
+            style={{ backgroundImage: `url(${renderedSlide})` }}
             aria-label="Carousel image"
+            aria-busy={isCarouselLoading}
           />
 
           <button

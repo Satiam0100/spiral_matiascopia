@@ -553,9 +553,16 @@
 
 .carouselStage {
   height: clamp(14rem, 38vh, 22rem);
+  background-color: #0b0b0b;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  transition: filter 160ms ease;
+  will-change: filter;
+}
+
+.carouselStageLoading {
+  filter: blur(1.5px) brightness(0.78);
 }
 
 .carouselArrow {

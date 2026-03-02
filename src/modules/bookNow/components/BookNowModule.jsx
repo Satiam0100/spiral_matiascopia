@@ -115,6 +115,7 @@ const BookNowModule = () => {
   const activeSlide = carouselSlides[slideIdx] ?? carouselSlides[0];
   const loadedSlidesRef = useRef(new Set());
   const [renderedSlide, setRenderedSlide] = useState(activeSlide);
+  const [incomingSlide, setIncomingSlide] = useState(null);
   const [isCarouselLoading, setIsCarouselLoading] = useState(false);
   const goPrev = () => setSlideIdx((i) => (i - 1 + slideCount) % slideCount);
   const goNext = () => setSlideIdx((i) => (i + 1) % slideCount);
@@ -155,6 +156,7 @@ const BookNowModule = () => {
 
   useEffect(() => {
     let cancelled = false;
+    let fadeTimer = null;
 
     const current = activeSlide;
     const next = carouselSlides[(slideIdx + 1) % slideCount];
@@ -173,12 +175,23 @@ const BookNowModule = () => {
     preloadImage(current).then((ok) => {
       if (cancelled) return;
       if (ok) loadedSlidesRef.current.add(current);
-      setRenderedSlide(current);
-      setIsCarouselLoading(false);
+      setIncomingSlide(current);
+      // Let the browser paint the new layer before transitioning opacity.
+      window.requestAnimationFrame(() => {
+        if (cancelled) return;
+        setRenderedSlide(current);
+        setIsCarouselLoading(false);
+      });
+
+      fadeTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        setIncomingSlide(null);
+      }, 320);
     });
 
     return () => {
       cancelled = true;
+      if (fadeTimer) window.clearTimeout(fadeTimer);
     };
   }, [activeSlide, renderedSlide, slideIdx, slideCount]);
 
@@ -197,14 +210,8 @@ const BookNowModule = () => {
     setActivePlan((p) => (p === plan ? null : plan));
     setSelectedTime(null);
     setSelectedDate(null);
+    setSubmitAttempted(false);
   };
-
-  const slideTitle =
-    activePlan === 'weekday'
-      ? 'STUDIO RENTAL WEEKDAY'
-      : activePlan === 'weekend'
-        ? 'STUDIO RENTAL WEEKEND'
-        : '';
 
   const price = useMemo(() => {
     const entry = rates.find((r) => r.hours === hours) ?? rates[0];
@@ -297,77 +304,19 @@ const BookNowModule = () => {
     []
   );
 
-  return (
-    <section className={styles.page} aria-label="Book now page">
+  const BookingSlide = ({ plan }) => {
+    const isOpen = activePlan === plan;
+    const planTitle = plan === 'weekday' ? 'STUDIO RENTAL WEEKDAY' : 'STUDIO RENTAL WEEKEND';
+
+    return (
       <section
-        className={styles.hero}
-        aria-label="Book Now hero"
-        style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+        className={`${styles.bookingSlide} ${isOpen ? styles.bookingSlideOpen : ''}`}
+        aria-label="Booking details"
+        aria-hidden={!isOpen}
       >
-        <div className={styles.heroOverlay} aria-hidden />
-        <img
-          className={styles.heroLogo}
-          src={CASA_LOGO_WHITE}
-          alt="CASA SPIRAL"
-          loading="eager"
-          decoding="async"
-        />
-      </section>
-
-      <section className={styles.bookNow} aria-label="Book the studio">
-        <div className={styles.titleBar}>
-          <h1 className={styles.title}>BOOK THE STUDIO</h1>
-        </div>
-
-        <div className={styles.panel}>
-          <div className={styles.row}>
-            <button
-              type="button"
-              className={`${styles.label} ${styles.labelButton}`}
-              onClick={() => togglePlan('weekday')}
-              aria-expanded={activePlan === 'weekday'}
-            >
-              STUDIO RENTAL&nbsp;&nbsp;WEEKDAY
-            </button>
-            <button
-              type="button"
-              className={styles.button}
-              onClick={() => togglePlan('weekday')}
-              aria-expanded={activePlan === 'weekday'}
-            >
-              BOOK NOW!
-            </button>
-          </div>
-
-          <div className={styles.divider} aria-hidden />
-
-          <div className={styles.row}>
-            <button
-              type="button"
-              className={`${styles.label} ${styles.labelButton}`}
-              onClick={() => togglePlan('weekend')}
-              aria-expanded={activePlan === 'weekend'}
-            >
-              STUDIO RENTAL&nbsp;&nbsp;WEEKEND
-            </button>
-            <button
-              type="button"
-              className={styles.button}
-              onClick={() => togglePlan('weekend')}
-              aria-expanded={activePlan === 'weekend'}
-            >
-              BOOK NOW!
-            </button>
-          </div>
-        </div>
-
-        <section
-          className={`${styles.bookingSlide} ${activePlan ? styles.bookingSlideOpen : ''}`}
-          aria-label="Booking details"
-          aria-hidden={!activePlan}
-        >
-          <div className={styles.bookingSlideInner}>
-            <div className={styles.bookingTopTitle}>{slideTitle}</div>
+        <div className={styles.bookingSlideInner}>
+          <div className={styles.bookingSlideContent}>
+            <div className={styles.bookingTopTitle}>{planTitle}</div>
 
             <div className={styles.bookingMeta}>
               <div className={styles.bookingMetaLeft}>
@@ -433,12 +382,7 @@ const BookNowModule = () => {
                       return <div key={`empty-${idx}`} className={styles.calendarCellEmpty} />;
                     }
                     const selected = isSameDay(cell, selectedDate);
-                    const allowed =
-                      activePlan === 'weekend'
-                        ? isWeekend(cell)
-                        : activePlan === 'weekday'
-                          ? !isWeekend(cell)
-                          : true;
+                    const allowed = plan === 'weekend' ? isWeekend(cell) : !isWeekend(cell);
                     return (
                       <button
                         key={cell.toISOString()}
@@ -457,40 +401,41 @@ const BookNowModule = () => {
                   })}
                 </div>
               </div>
+            </div>
 
-              <div className={styles.timeCard} aria-label="Time slots">
-                <div className={styles.timeHeader}>
-                  <div className={styles.timeTitle}>
-                    {selectedDate
-                      ? selectedDate.toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          month: 'long',
-                          day: 'numeric',
-                        })
-                      : 'Select a date'}
-                  </div>
-                  <div className={styles.timeZone}>TIME ZONE: EASTERN TIME (GMT-05:00)</div>
+            <div className={styles.timeCard} aria-label="Time slots">
+              <div className={styles.timeHeader}>
+                <div className={styles.timeTitle}>
+                  {selectedDate
+                    ? selectedDate.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : 'Select a date'}
                 </div>
+                <div className={styles.timeZone}>TIME ZONE: EASTERN TIME (GMT-05:00)</div>
+              </div>
 
-                <div className={styles.timeGrid} role="list">
-                  {timeSlots.map((t) => {
-                    const active = t === selectedTime;
-                    return (
-                      <button
-                        key={t}
-                        type="button"
-                        className={`${styles.timeSlot} ${active ? styles.timeSlotActive : ''}`}
-                        onClick={() => setSelectedTime(t)}
-                        disabled={!selectedDate}
-                        aria-pressed={active}
-                      >
-                        {t}
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className={styles.timeGrid} role="list">
+                {timeSlots.map((t) => {
+                  const active = t === selectedTime;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`${styles.timeSlot} ${active ? styles.timeSlotActive : ''}`}
+                      onClick={() => setSelectedTime(t)}
+                      disabled={!selectedDate}
+                      aria-pressed={active}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
               </div>
             </div>
+          </div>
 
             <div className={styles.infoBlock} aria-label="Your information">
               <div className={styles.infoTitle}>YOUR INFORMATION</div>
@@ -513,108 +458,113 @@ const BookNowModule = () => {
                         }))
                       }
                       aria-invalid={showErrors && !!validation.errors.firstName}
-                      aria-describedby={validation.errors.firstName ? 'booknow-firstname-error' : undefined}
+                      aria-describedby={
+                        validation.errors.firstName ? 'booknow-firstname-error' : undefined
+                      }
                       autoComplete="given-name"
                     />
                     {showErrors && validation.errors.firstName ? (
-                      <div
-                        id="booknow-firstname-error"
-                        className={styles.fieldError}
-                        role="alert"
-                      >
+                      <div id="booknow-firstname-error" className={styles.fieldError} role="alert">
                         {validation.errors.firstName}
                       </div>
                     ) : null}
                   </div>
                 </label>
-                <label className={styles.fieldRow}>
-                  <span className={styles.fieldLabel}>LAST NAME</span>
-                  <div className={styles.fieldControl}>
-                    <input
-                      className={`${styles.fieldInput} ${
-                        showErrors && validation.errors.lastName ? styles.fieldInputError : ''
-                      }`}
-                      type="text"
-                      name="lastName"
-                      value={formValues.lastName}
-                      onChange={(e) =>
-                        setFormValues((v) => ({
-                          ...v,
-                          lastName: e.target.value,
-                        }))
-                      }
-                      aria-invalid={showErrors && !!validation.errors.lastName}
-                      aria-describedby={validation.errors.lastName ? 'booknow-lastname-error' : undefined}
-                      autoComplete="family-name"
-                    />
-                    {showErrors && validation.errors.lastName ? (
-                      <div id="booknow-lastname-error" className={styles.fieldError} role="alert">
-                        {validation.errors.lastName}
-                      </div>
-                    ) : null}
-                  </div>
-                </label>
-                <label className={styles.fieldRow}>
-                  <span className={styles.fieldLabel}>PHONE NUMBER</span>
-                  <div className={styles.fieldControl}>
-                    <input
-                      className={`${styles.fieldInput} ${
-                        showErrors && validation.errors.phone ? styles.fieldInputError : ''
-                      }`}
-                      type="tel"
-                      name="phone"
-                      value={formValues.phone}
-                      onChange={(e) =>
-                        setFormValues((v) => ({
-                          ...v,
-                          phone: e.target.value,
-                        }))
-                      }
-                      aria-invalid={showErrors && !!validation.errors.phone}
-                      aria-describedby={validation.errors.phone ? 'booknow-phone-error' : undefined}
-                      autoComplete="tel"
-                      inputMode="tel"
-                    />
-                    {showErrors && validation.errors.phone ? (
-                      <div id="booknow-phone-error" className={styles.fieldError} role="alert">
-                        {validation.errors.phone}
-                      </div>
-                    ) : null}
-                  </div>
-                </label>
-                <label className={styles.fieldRow}>
-                  <span className={styles.fieldLabel}>EMAIL</span>
-                  <div className={styles.fieldControl}>
-                    <input
-                      className={`${styles.fieldInput} ${
-                        showErrors && validation.errors.email ? styles.fieldInputError : ''
-                      }`}
-                      type="email"
-                      name="email"
-                      value={formValues.email}
-                      onChange={(e) =>
-                        setFormValues((v) => ({
-                          ...v,
-                          email: e.target.value,
-                        }))
-                      }
-                      aria-invalid={showErrors && !!validation.errors.email}
-                      aria-describedby={validation.errors.email ? 'booknow-email-error' : undefined}
-                      autoComplete="email"
-                      inputMode="email"
-                    />
-                    {showErrors && validation.errors.email ? (
-                      <div id="booknow-email-error" className={styles.fieldError} role="alert">
-                        {validation.errors.email}
-                      </div>
-                    ) : null}
-                  </div>
-                </label>
-              </div>
+              <label className={styles.fieldRow}>
+                <span className={styles.fieldLabel}>LAST NAME</span>
+                <div className={styles.fieldControl}>
+                  <input
+                    className={`${styles.fieldInput} ${
+                      showErrors && validation.errors.lastName ? styles.fieldInputError : ''
+                    }`}
+                    type="text"
+                    name="lastName"
+                    value={formValues.lastName}
+                    onChange={(e) =>
+                      setFormValues((v) => ({
+                        ...v,
+                        lastName: e.target.value,
+                      }))
+                    }
+                    aria-invalid={showErrors && !!validation.errors.lastName}
+                    aria-describedby={
+                      validation.errors.lastName ? 'booknow-lastname-error' : undefined
+                    }
+                    autoComplete="family-name"
+                  />
+                  {showErrors && validation.errors.lastName ? (
+                    <div id="booknow-lastname-error" className={styles.fieldError} role="alert">
+                      {validation.errors.lastName}
+                    </div>
+                  ) : null}
+                </div>
+              </label>
+              <label className={styles.fieldRow}>
+                <span className={styles.fieldLabel}>PHONE NUMBER</span>
+                <div className={styles.fieldControl}>
+                  <input
+                    className={`${styles.fieldInput} ${
+                      showErrors && validation.errors.phone ? styles.fieldInputError : ''
+                    }`}
+                    type="tel"
+                    name="phone"
+                    value={formValues.phone}
+                    onChange={(e) =>
+                      setFormValues((v) => ({
+                        ...v,
+                        phone: e.target.value,
+                      }))
+                    }
+                    aria-invalid={showErrors && !!validation.errors.phone}
+                    aria-describedby={validation.errors.phone ? 'booknow-phone-error' : undefined}
+                    autoComplete="tel"
+                    inputMode="tel"
+                  />
+                  {showErrors && validation.errors.phone ? (
+                    <div id="booknow-phone-error" className={styles.fieldError} role="alert">
+                      {validation.errors.phone}
+                    </div>
+                  ) : null}
+                </div>
+              </label>
+              <label className={styles.fieldRow}>
+                <span className={styles.fieldLabel}>EMAIL</span>
+                <div className={styles.fieldControl}>
+                  <input
+                    className={`${styles.fieldInput} ${
+                      showErrors && validation.errors.email ? styles.fieldInputError : ''
+                    }`}
+                    type="email"
+                    name="email"
+                    value={formValues.email}
+                    onChange={(e) =>
+                      setFormValues((v) => ({
+                        ...v,
+                        email: e.target.value,
+                      }))
+                    }
+                    aria-invalid={showErrors && !!validation.errors.email}
+                    aria-describedby={validation.errors.email ? 'booknow-email-error' : undefined}
+                    autoComplete="email"
+                    inputMode="email"
+                  />
+                  {showErrors && validation.errors.email ? (
+                    <div id="booknow-email-error" className={styles.fieldError} role="alert">
+                      {validation.errors.email}
+                    </div>
+                  ) : null}
+                </div>
+              </label>
+            </div>
 
-              {showErrors && (validation.errors.activePlan || validation.errors.selectedDate || validation.errors.selectedTime) ? (
+              {showErrors &&
+              (validation.errors.activePlan ||
+                validation.errors.selectedDate ||
+                validation.errors.selectedTime) ? (
                 <div className={styles.formSummaryError} role="alert">
-                  {validation.errors.activePlan ?? validation.errors.selectedDate ?? validation.errors.selectedTime}
+                  {validation.errors.activePlan ??
+                    validation.errors.selectedDate ??
+                    validation.errors.selectedTime}
                 </div>
               ) : null}
 
@@ -632,7 +582,77 @@ const BookNowModule = () => {
               </a>
             </div>
           </div>
-        </section>
+      </section>
+    );
+  };
+
+  return (
+    <section className={styles.page} aria-label="Book now page">
+      <section
+        className={styles.hero}
+        aria-label="Book Now hero"
+        style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+      >
+        <div className={styles.heroOverlay} aria-hidden />
+        <img
+          className={styles.heroLogo}
+          src={CASA_LOGO_WHITE}
+          alt="CASA SPIRAL"
+          loading="eager"
+          decoding="async"
+        />
+      </section>
+
+      <section className={styles.bookNow} aria-label="Book the studio">
+        <div className={styles.titleBar}>
+          <h1 className={styles.title}>BOOK THE STUDIO</h1>
+        </div>
+
+        <div className={styles.panel}>
+          <div className={styles.row}>
+            <button
+              type="button"
+              className={`${styles.label} ${styles.labelButton}`}
+              onClick={() => togglePlan('weekday')}
+              aria-expanded={activePlan === 'weekday'}
+            >
+              STUDIO RENTAL&nbsp;&nbsp;WEEKDAY
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={() => togglePlan('weekday')}
+              aria-expanded={activePlan === 'weekday'}
+            >
+              BOOK NOW!
+            </button>
+          </div>
+
+          <BookingSlide plan="weekday" />
+
+          <div className={styles.divider} aria-hidden />
+
+          <div className={styles.row}>
+            <button
+              type="button"
+              className={`${styles.label} ${styles.labelButton}`}
+              onClick={() => togglePlan('weekend')}
+              aria-expanded={activePlan === 'weekend'}
+            >
+              STUDIO RENTAL&nbsp;&nbsp;WEEKEND
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={() => togglePlan('weekend')}
+              aria-expanded={activePlan === 'weekend'}
+            >
+              BOOK NOW!
+            </button>
+          </div>
+
+          <BookingSlide plan="weekend" />
+        </div>
       </section>
 
       <section className={styles.carouselWrap} aria-label="Studio carousel">
@@ -650,10 +670,22 @@ const BookNowModule = () => {
             className={`${styles.carouselStage} ${
               isCarouselLoading ? styles.carouselStageLoading : ''
             }`}
-            style={{ backgroundImage: `url(${renderedSlide})` }}
             aria-label="Carousel image"
             aria-busy={isCarouselLoading}
-          />
+          >
+            <div
+              className={styles.carouselLayer}
+              style={{ backgroundImage: `url(${renderedSlide})` }}
+              aria-hidden="true"
+            />
+            {incomingSlide ? (
+              <div
+                className={`${styles.carouselLayer} ${styles.carouselLayerIncoming}`}
+                style={{ backgroundImage: `url(${incomingSlide})` }}
+                aria-hidden="true"
+              />
+            ) : null}
+          </div>
 
           <button
             type="button"

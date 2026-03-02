@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 
 const navLeft = ['HOME', 'SERVICES', 'PORTFOLIO', 'ABOUT'];
@@ -25,6 +25,16 @@ const sectionHref = (item) => {
 };
 
 const Footer = () => {
+  const location = useLocation();
+
+  const scrollTopIfAlreadyHome = (to) => (e) => {
+    if (to !== '/') return;
+    if (location.pathname === '/' && !location.hash) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer id="contact-us" className={styles.footer}>
       <div id="book-now" aria-hidden />
@@ -36,7 +46,9 @@ const Footer = () => {
               <ul className={styles.footerNav}>
                 {navLeft.map((item) => (
                   <li key={item}>
-                    <Link to={leftHref(item)}>{item}</Link>
+                    <Link to={leftHref(item)} onClick={scrollTopIfAlreadyHome(leftHref(item))}>
+                      {item}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -50,7 +62,7 @@ const Footer = () => {
             </div>
           </div>
           <div className={styles.footerColCenter}>
-            <Link to="/" aria-label="Spiral home">
+            <Link to="/" aria-label="Spiral home" onClick={scrollTopIfAlreadyHome('/')}>
               <img
                 className={styles.footerLogoImage}
                 src={SPIRAL_LOGO_WHITE}

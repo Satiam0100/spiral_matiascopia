@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from '../styles/home.module.css';
 
 const leftLinks = ['Home', 'Services', 'Portfolio', 'About'];
@@ -26,6 +26,7 @@ const rightLinkTo = (item) => {
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const update = () => setIsScrolled(window.scrollY > 10);
@@ -34,17 +35,32 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', update);
   }, []);
 
+  const scrollTopIfAlreadyHome = (to) => (e) => {
+    if (to !== '/') return;
+    if (location.pathname === '/' && !location.hash) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className={`${styles.header} ${isScrolled ? styles.headerScrolled : ''}`}>
       <nav className={styles.nav}>
         <ul className={styles.navLeft}>
           {leftLinks.map((item) => (
             <li key={item}>
-              <Link to={leftLinkTo(item)}>{item}</Link>
+              <Link to={leftLinkTo(item)} onClick={scrollTopIfAlreadyHome(leftLinkTo(item))}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>
-        <Link to="/" className={styles.logoBlock} aria-label="Spiral home">
+        <Link
+          to="/"
+          className={styles.logoBlock}
+          aria-label="Spiral home"
+          onClick={scrollTopIfAlreadyHome('/')}
+        >
           <img
             className={styles.logoImage}
             src={SPIRAL_LOGO_WHITE}

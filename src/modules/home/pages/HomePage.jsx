@@ -2,6 +2,7 @@ import React from 'react';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import WhatWeDo from '../components/WhatWedo';
+import PhotoCarousel from '../components/PhotoCarousel';
 import GalleryCarousel from '../components/GalleryCarousel';
 import OurServices from '../components/OurServices';
 import RecentWork from '../components/RecentWork';
@@ -16,6 +17,7 @@ const HomePage = () => {
       <Navigation />
       <Hero />
       <WhatWeDo />
+      <PhotoCarousel />
       <GalleryCarousel />
       <OurServices />
       <RecentWork />

@@ -21,9 +21,9 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/images/photos/DSC01989.jpg') 30% 22% / cover no-repeat;
-  opacity: 0.55;
-  filter: grayscale(35%) brightness(0.6) contrast(1.08);
+  background: url('/images/photos/DSC01989.jpg') 30% 30% / cover no-repeat;
+  opacity: 0.98;
+  filter: none;
   transform: scale(1.02);
 }
 
@@ -31,8 +31,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 600px at 60% 45%, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 70%, rgba(0, 0, 0, 0.72) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.55) 100%);
+    radial-gradient(1200px 600px at 60% 45%, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.32) 70%, rgba(0, 0, 0, 0.42) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.32) 100%);
 }
 
 .heroInner {

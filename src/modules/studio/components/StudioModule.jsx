@@ -260,7 +260,7 @@ const StudioModule = () => {
               <div className={styles.polaroidClip} />
               <div
                 className={styles.polaroidPhoto}
-                style={{ backgroundImage: `url(${activeSlide})` }}
+                style={{ backgroundImage: "url('/images/photos/DSC09031.jpg')" }}
               />
             </div>
           </div>

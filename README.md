@@ -1,16 +1,74 @@
-# React + Vite
+# SPIRAL Marketing Studio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sitio web construido con **React + Vite** y **React Router**, organizado por módulos en `src/modules/*`.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** 19
+- **Vite** 7
+- **React Router DOM** 7
+- **ESLint** 9
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Node.js** `>= 18`
+- **pnpm** (el repo fija `pnpm@10.x` vía `packageManager`)
 
-## Expanding the ESLint configuration
+## Empezar
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Instalar dependencias:
+
+```bash
+pnpm install
+```
+
+Levantar el entorno de desarrollo:
+
+```bash
+pnpm dev
+```
+
+Compilar para producción:
+
+```bash
+pnpm build
+```
+
+Previsualizar el build:
+
+```bash
+pnpm preview
+```
+
+Lint:
+
+```bash
+pnpm lint
+```
+
+## Rutas
+
+Las rutas principales están definidas en `src/App.jsx`:
+
+- `/` → Home
+- `/services` → Services
+- `/studio` → Studio
+- `/book-now` → Book Now
+- `/portfolio` → Portfolio
+- `/about` → About
+
+## Estructura del proyecto (resumen)
+
+- `src/main.jsx`: bootstrap de React + `BrowserRouter`
+- `src/App.jsx`: enrutado principal
+- `src/modules/*`: páginas, componentes, estilos y data por sección
+  - `home`, `services`, `portfolio`, `about`, `studio`, `bookNow`
+- `src/styles/*`: estilos globales y variables
+
+## Variables de entorno
+
+Actualmente el proyecto **no requiere** variables de entorno para correr en local (no hay `.env` en el repo). Si se agregan integraciones futuras, documentarlas aquí y en un `.env.example`.
+
+## Build y despliegue
+
+`pnpm build` genera la carpeta `dist/` (salida estándar de Vite). Podés desplegar `dist/` en cualquier hosting estático (Netlify, Vercel, Cloudflare Pages, GitHub Pages, etc.).

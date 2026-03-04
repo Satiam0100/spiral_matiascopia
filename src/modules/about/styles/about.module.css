@@ -8,7 +8,8 @@
 /* ----- Hero ----- */
 .hero {
   position: relative;
-  min-height: 56vh;
+  /* Match hero height used across the site (Studio / Book Now imagery). */
+  min-height: clamp(26rem, 62vh, 44rem);
   overflow: hidden;
   display: flex;
   align-items: stretch;

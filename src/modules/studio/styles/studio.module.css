@@ -56,7 +56,7 @@
 
 .introTitle {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-loverica, var(--font-display));
   font-size: clamp(2.2rem, 5.6vw, 4.1rem);
   font-weight: 400;
   letter-spacing: 0.18em;

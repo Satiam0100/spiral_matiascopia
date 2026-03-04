@@ -140,7 +140,7 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   padding: clamp(2.25rem, 4vh, 3.25rem) 0 clamp(4rem, 7vh, 6rem);
-  --studioCardRadius: clamp(1.75rem, 4.5vw, 3rem);
+  --studioCardRadius: clamp(2.35rem, 5.6vw, 4rem);
 }
 
 .detailsInner {
@@ -170,7 +170,7 @@
 .cardLabel {
   margin: 0 0 0.85rem 0;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: clamp(0.78rem, 1.25vw, 0.95rem);
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.78);
@@ -179,7 +179,7 @@
 .cardBody {
   margin: 0;
   font-family: var(--font-primary);
-  font-size: 0.92rem;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
   line-height: 1.65;
   max-width: 110ch;
   text-wrap: pretty;
@@ -189,11 +189,12 @@
 .amenitiesCard {
   position: relative;
   z-index: 1;
-  margin-top: clamp(-1.35rem, -2.2vw, -0.9rem);
+  margin-top: clamp(-2.15rem, -3.2vw, -1.45rem);
   background: #000;
   color: #fff;
   border-radius: var(--studioCardRadius) var(--studioCardRadius) 0 0;
   overflow: hidden;
+  min-height: clamp(28rem, 52vh, 40rem);
   padding: clamp(1.55rem, 3.6vw, 2.35rem);
   padding-left: clamp(1.25rem, 4vw, 2.5rem);
   padding-right: clamp(1.25rem, 4vw, 2.5rem);
@@ -215,7 +216,7 @@
 .amenitiesLabel {
   margin: 0 0 0.8rem 0;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: clamp(0.78rem, 1.25vw, 0.95rem);
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.9);
@@ -224,7 +225,7 @@
 .amenitiesIntro {
   margin: 0 0 0.85rem 0;
   font-family: var(--font-primary);
-  font-size: 0.92rem;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.72);
 }
@@ -240,7 +241,7 @@
   margin: 0;
   padding-left: 1.15rem;
   font-family: var(--font-primary);
-  font-size: 0.92rem;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.78);
 }
@@ -252,7 +253,7 @@
 .amenitiesOutro {
   margin: 0.95rem 0 0 0;
   font-family: var(--font-primary);
-  font-size: 0.92rem;
+  font-size: clamp(1rem, 1.15vw, 1.12rem);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.75);
 }
@@ -545,7 +546,7 @@
   }
 
   .amenitiesCard {
-    margin-top: -0.85rem;
+    margin-top: -1.15rem;
   }
 }
 

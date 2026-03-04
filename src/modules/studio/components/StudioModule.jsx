@@ -11,22 +11,22 @@ const features = [
   {
     id: '01',
     title: 'Creative\nAtmosphere',
-    imageUrl: '/images/photos/DSC02284.jpg',
+    imageUrl: '/images/photos/DSC01921.jpg',
   },
   {
     id: '02',
     title: 'Effortless\nSetup',
-    imageUrl: '/images/photos/DSC02285.jpg',
+    imageUrl: '/images/photos/DSC02521.jpg',
   },
   {
     id: '03',
     title: 'Modern\nAesthetic',
-    imageUrl: '/images/photos/DSC02040.jpg',
+    imageUrl: '/images/photos/IMG_6230.jpg',
   },
   {
     id: '04',
     title: 'Equipment\nIncluded',
-    imageUrl: '/images/photos/DSC02408.jpg',
+    imageUrl: '/images/photos/DSC02284.jpg',
   },
 ];
 

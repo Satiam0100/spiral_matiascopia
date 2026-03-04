@@ -19,12 +19,10 @@ const OurServices = () => {
         <div className={styles.servicesList}>
           {services.map((s) => (
             <div key={s.id} className={styles.serviceRow}>
-              <div className={styles.serviceRowLeft}>
-                <span className={styles.serviceNumber}>{s.id}</span>
-                <span className={styles.serviceTitle} data-service-id={s.id}>
-                  {s.title}
-                </span>
-              </div>
+              <span className={styles.serviceNumber}>{s.id}</span>
+              <span className={styles.serviceTitle} data-service-id={s.id}>
+                {s.title}
+              </span>
 
               <Link to="/services" className={styles.learnMoreBtn}>
                 LEARN MORE

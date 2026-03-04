@@ -537,72 +537,78 @@
 }
 
 .serviceRow {
-  padding: var(--spacing-md) 0;
+  padding: clamp(1.6rem, 4vh, 2.35rem) 0;
   border-bottom: 1px solid var(--border-color);
-  display: flex;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.serviceRowLeft {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-width: 0;
-  flex: 1 1 340px;
+  column-gap: clamp(1.25rem, 4vw, 3rem);
 }
 
 .serviceNumber {
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.25vw, 1rem);
+  letter-spacing: 0.14em;
   color: var(--text-secondary);
   min-width: 2rem;
+  align-self: start;
+  padding-top: 0.35rem;
 }
 
 .serviceTitle {
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-size: clamp(2.05rem, 3.9vw, 2.95rem);
   font-weight: 400;
   color: var(--text-primary);
   min-width: 0;
+  justify-self: start;
+  text-align: left;
+  line-height: 0.9;
+  letter-spacing: 0;
 }
 
 .serviceTitle[data-service-id='01'] {
   font-family: var(--font-loverica, var(--font-display));
+  max-width: 14ch;
+  letter-spacing: -0.01em;
 }
 
 .serviceTitle[data-service-id='02'] {
   font-family: 'Anonymous Pro', var(--font-mono);
+  max-width: 20ch;
+  letter-spacing: 0.02em;
+  word-spacing: normal;
 }
 
 .serviceTitle[data-service-id='03'] {
   font-family: 'Luxurious Script', cursive;
-  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-size: clamp(2.45rem, 4.6vw, 3.35rem);
   letter-spacing: 0.01em;
   text-transform: none;
+  max-width: none;
 }
 
 .learnMoreBtn {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--text-primary);
-  padding: 0.6rem 1.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  background: rgba(215, 215, 215, 0.88);
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  padding: 0.8rem 2.1rem;
+  font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+  letter-spacing: 0.08em;
   cursor: pointer;
   transition: var(--transition);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
-  margin-left: auto;
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  justify-self: end;
+  white-space: nowrap;
 }
 
 .learnMoreBtn:hover {
-  background: var(--text-primary);
-  color: #000;
+  background: rgba(235, 235, 235, 0.96);
 }
 
 /* ----- Recent Work ----- */
@@ -1043,12 +1049,16 @@
   }
 
   .serviceRow {
-    padding: 1.1rem 0;
+    grid-template-columns: 52px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    row-gap: 0.85rem;
+    padding: 1.25rem 0;
   }
 
   .learnMoreBtn {
-    padding: 0.55rem 1.25rem;
-    font-size: 0.72rem;
+    grid-column: 1 / -1;
+    justify-self: center;
+    padding: 0.7rem 1.7rem;
   }
 
   /* Keep Recent Work composition, but invert title offsets on small screens */

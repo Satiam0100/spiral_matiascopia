@@ -5,23 +5,23 @@ import styles from '../styles/studio.module.css';
 const CASA_LOGO_WHITE =
   '/images/spiral%20logos/SPIRAL%20Logos/Casa%20Spiral/Casa.spiral-white.png';
 
-const HERO_IMAGE = '/images/photos/DSC01989.jpg';
+const HERO_IMAGE = '/images/optimized/DSC01989_1280.jpg';
 
 const features = [
   {
     id: '01',
     title: 'Creative\nAtmosphere',
-    imageUrl: '/images/photos/DSC01921.jpg',
+    imageUrl: '/images/optimized/DSC01921_1280.jpg',
   },
   {
     id: '02',
     title: 'Effortless\nSetup',
-    imageUrl: '/images/photos/DSC02521.jpg',
+    imageUrl: '/images/optimized/DSC02521_1280.jpg',
   },
   {
     id: '03',
     title: 'Modern\nAesthetic',
-    imageUrl: '/images/photos/IMG_6230.jpg',
+    imageUrl: '/images/optimized/IMG_6230_1280.jpg',
   },
   {
     id: '04',

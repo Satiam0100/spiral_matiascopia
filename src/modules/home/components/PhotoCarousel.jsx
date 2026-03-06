@@ -2,14 +2,14 @@ import React from 'react';
 import styles from '../styles/home.module.css';
 
 const photos = [
-  '/images/photos/DSC02040.jpg',
-  '/images/photos/DSC01963.jpg',
-  '/images/photos/DSC02380.jpg',
-  '/images/photos/DSC04163.jpg',
-  '/images/photos/DSC02285.jpg',
-  '/images/photos/DSC01989.jpg',
-  '/images/photos/DSC02408.jpg',
-  '/images/photos/DSC02284.jpg',
+  '/images/optimized/DSC02040_960.jpg',
+  '/images/optimized/DSC01963_960.jpg',
+  '/images/optimized/DSC02380_960.jpg',
+  '/images/optimized/DSC04163_960.jpg',
+  '/images/optimized/DSC02285_960.jpg',
+  '/images/optimized/DSC01989_960.jpg',
+  '/images/optimized/DSC02408_960.jpg',
+  '/images/optimized/DSC02284_960.jpg',
 ];
 
 const PhotoCarousel = () => {

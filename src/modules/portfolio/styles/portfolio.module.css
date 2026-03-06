@@ -17,10 +17,19 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/images/photos/DSC01973.jpg') 50% 21% / cover no-repeat;
+  background: url('/images/optimized/DSC01973_1280.jpg') 50% 21% / cover no-repeat;
   opacity: 0.9;
   filter: saturate(0.95) contrast(1.05) brightness(0.7);
   transform: scale(1.02);
+}
+
+@supports (background-image: image-set(url('/x.webp') type('image/webp'))) {
+  .hero::before {
+    background-image: image-set(
+      url('/images/optimized/DSC01973_1280.webp') type('image/webp'),
+      url('/images/optimized/DSC01973_1280.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .heroOverlay {
@@ -161,11 +170,20 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/images/photos/DSC02285.jpg') center/cover no-repeat;
+  background: url('/images/optimized/DSC02285_1280.jpg') center/cover no-repeat;
   filter: grayscale(1) contrast(1.05) brightness(0.9);
   transform: scale(1.08);
   opacity: 0.9;
   z-index: 0;
+}
+
+@supports (background-image: image-set(url('/x.webp') type('image/webp'))) {
+  .mediaBlockPhotos::before {
+    background-image: image-set(
+      url('/images/optimized/DSC02285_1280.webp') type('image/webp'),
+      url('/images/optimized/DSC02285_1280.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .mediaBlockPhotos::after {
@@ -333,9 +351,18 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/images/photos/DSC09041.jpg') 50% 29% / cover no-repeat;
+  background: url('/images/optimized/DSC09041_1280.jpg') 50% 29% / cover no-repeat;
   filter: saturate(0.85) contrast(1.05) brightness(0.68);
   transform: scale(1.02);
+}
+
+@supports (background-image: image-set(url('/x.webp') type('image/webp'))) {
+  .preFooterCta::before {
+    background-image: image-set(
+      url('/images/optimized/DSC09041_1280.webp') type('image/webp'),
+      url('/images/optimized/DSC09041_1280.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .preFooterCtaOverlay {

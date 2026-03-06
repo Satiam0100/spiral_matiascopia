@@ -21,10 +21,19 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/images/photos/DSC01989.jpg') 30% 30% / cover no-repeat;
+  background: url('/images/optimized/DSC01989_1280.jpg') 30% 30% / cover no-repeat;
   opacity: 0.98;
   filter: none;
   transform: scale(1.02);
+}
+
+@supports (background-image: image-set(url('/x.webp') type('image/webp'))) {
+  .hero::before {
+    background-image: image-set(
+      url('/images/optimized/DSC01989_1280.webp') type('image/webp'),
+      url('/images/optimized/DSC01989_1280.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .heroOverlay {

@@ -5,14 +5,14 @@ import ElfsightInstagramFeed from '../../../components/ElfsightInstagramFeed';
 const CASA_LOGO_WHITE =
   '/images/spiral%20logos/SPIRAL%20Logos/Casa%20Spiral/Casa.spiral-white.png';
 
-const HERO_IMAGE = '/images/photos/DSC01989.jpg';
+const HERO_IMAGE = '/images/optimized/DSC01989_1280.jpg';
 const BOOK_EMAIL = 'andrea@spiralmstudio.com';
 
 const carouselSlides = [
-  '/images/photos/DSC02380.jpg',
-  '/images/photos/DSC02040.jpg',
-  '/images/photos/DSC01963.jpg',
-  '/images/photos/DSC04163.jpg',
+  '/images/optimized/DSC02380_1280.jpg',
+  '/images/optimized/DSC02040_1280.jpg',
+  '/images/optimized/DSC01963_1280.jpg',
+  '/images/optimized/DSC04163_1280.jpg',
 ];
 
 const rates = [

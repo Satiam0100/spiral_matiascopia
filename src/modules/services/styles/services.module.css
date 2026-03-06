@@ -9,8 +9,17 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: url('/images/photos/DSC09102.jpg') center/cover no-repeat;
+  background: url('/images/optimized/DSC09102_1280.jpg') center/cover no-repeat;
   filter: saturate(0.95) contrast(1.05) brightness(0.82);
+}
+
+@supports (background-image: image-set(url('/x.webp') type('image/webp'))) {
+  .servicesHero {
+    background-image: image-set(
+      url('/images/optimized/DSC09102_1280.webp') type('image/webp'),
+      url('/images/optimized/DSC09102_1280.jpg') type('image/jpeg')
+    );
+  }
 }
 
 .servicesHeroOverlay {

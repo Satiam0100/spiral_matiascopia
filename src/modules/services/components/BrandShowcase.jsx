@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../styles/services.module.css';
+import ElfsightInstagramFeed from '../../../components/ElfsightInstagramFeed';
 
 const SPIRAL_ICON_WHITE =
   '/images/spiral%20logos/SPIRAL%20Logos/Icon/Spiral-Icon-White.png';
@@ -61,10 +62,8 @@ const BrandShowcase = () => {
             @SPIRAL.MSTUDIO
           </a>
         </div>
-        <div className={styles.brandGrid} aria-hidden>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className={styles.brandGridCell} />
-          ))}
+        <div className={styles.brandGrid} aria-label="Instagram feed">
+          <ElfsightInstagramFeed />
         </div>
       </div>
     </section>

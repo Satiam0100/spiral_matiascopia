@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from '../styles/home.module.css';
-
-const GRID_SIZE = 6;
+import ElfsightInstagramFeed from '../../../components/ElfsightInstagramFeed';
 
 const InstagramGrid = () => {
   return (
@@ -16,10 +15,8 @@ const InstagramGrid = () => {
           @SPIRAL.MSTUDIO
         </a>
       </div>
-      <div className={styles.instagramGrid} aria-hidden>
-        {Array.from({ length: GRID_SIZE }).map((_, i) => (
-          <div key={i} className={styles.instagramCell} />
-        ))}
+      <div className={styles.instagramGrid}>
+        <ElfsightInstagramFeed />
       </div>
     </section>
   );

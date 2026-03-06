@@ -809,9 +809,9 @@
 }
 
 .instagramTop {
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
-  padding: 0.95rem 2rem;
+  padding: 0.95rem clamp(1rem, 4vw, 3.25rem);
   display: flex;
   justify-content: flex-end;
 }
@@ -838,12 +838,10 @@
 }
 
 .instagramGrid {
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
-  padding: 0 2rem 1.4rem 2rem;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0;
+  padding: 0 clamp(1rem, 4vw, 3.25rem) 1.4rem clamp(1rem, 4vw, 3.25rem);
+  display: block;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -1174,9 +1172,7 @@
     justify-content: center;
   }
 
-  .instagramGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  /* Elfsight maneja su propio layout responsive */
 }
 
 @media (min-width: 901px) {
@@ -1231,9 +1227,7 @@
     max-width: 280px;
   }
 
-  .instagramGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  /* Elfsight maneja su propio layout responsive */
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/bookNow.module.css';
+import ElfsightInstagramFeed from '../../../components/ElfsightInstagramFeed';
 
 const CASA_LOGO_WHITE =
   '/images/spiral%20logos/SPIRAL%20Logos/Casa%20Spiral/Casa.spiral-white.png';
@@ -891,10 +892,8 @@ const BookNowModule = () => {
           </a>
         </div>
 
-        <div className={styles.instagramGrid} aria-hidden>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className={styles.instagramCell} />
-          ))}
+        <div className={styles.instagramGrid}>
+          <ElfsightInstagramFeed />
         </div>
       </section>
     </section>

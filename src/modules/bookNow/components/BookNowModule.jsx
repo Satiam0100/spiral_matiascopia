@@ -270,38 +270,37 @@ const BookingSlide = React.memo(function BookingSlide({
                 })}
               </div>
             </div>
-          </div>
-
-          <div className={styles.timeCard} aria-label="Time slots">
-            <div className={styles.timeHeader}>
-              <div className={styles.timeTitle}>
-                {selectedDate
-                  ? selectedDate.toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric',
-                    })
-                  : 'Select a date'}
+            <div className={styles.timeCard} aria-label="Time slots">
+              <div className={styles.timeHeader}>
+                <div className={styles.timeTitle}>
+                  {selectedDate
+                    ? selectedDate.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : 'Select a date'}
+                </div>
+                <div className={styles.timeZone}>TIME ZONE: EASTERN TIME (GMT-05:00)</div>
               </div>
-              <div className={styles.timeZone}>TIME ZONE: EASTERN TIME (GMT-05:00)</div>
-            </div>
 
-            <div className={styles.timeGrid} role="list">
-              {timeSlots.map((t) => {
-                const active = t === selectedTime;
-                return (
-                  <button
-                    key={t}
-                    type="button"
-                    className={`${styles.timeSlot} ${active ? styles.timeSlotActive : ''}`}
-                    onClick={() => setSelectedTime(t)}
-                    disabled={!selectedDate}
-                    aria-pressed={active}
-                  >
-                    {t}
-                  </button>
-                );
-              })}
+              <div className={styles.timeGrid} role="list">
+                {timeSlots.map((t) => {
+                  const active = t === selectedTime;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      className={`${styles.timeSlot} ${active ? styles.timeSlotActive : ''}`}
+                      onClick={() => setSelectedTime(t)}
+                      disabled={!selectedDate}
+                      aria-pressed={active}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

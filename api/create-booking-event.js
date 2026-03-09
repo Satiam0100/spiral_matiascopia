@@ -74,6 +74,8 @@ export default async function handler(req, res) {
   const calendarId = process.env.GOOGLE_CALENDAR_ID;
   const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+  const studioNotificationEmail =
+    (process.env.STUDIO_NOTIFICATION_EMAIL || '').trim() || 'andrea@spiralmstudio.com';
 
   if (!calendarId || !clientEmail || !privateKey) {
     return json(res, 500, {
@@ -157,13 +159,23 @@ export default async function handler(req, res) {
   ];
 
   try {
+    const attendees = [
+      ...(email ? [{ email }] : []),
+      ...(studioNotificationEmail ? [{ email: studioNotificationEmail }] : []),
+    ];
+
     const resp = await calendar.events.insert({
       calendarId,
+      sendUpdates: 'all',
       requestBody: {
         summary,
         description: descriptionLines.join('\n'),
         start: { dateTime: startDateTime, timeZone: TZ },
         end: { dateTime: endDateTime, timeZone: TZ },
+        attendees,
+        guestsCanInviteOthers: false,
+        guestsCanModify: false,
+        guestsCanSeeOtherGuests: false,
       },
     });
 

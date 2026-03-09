@@ -28,6 +28,8 @@ En Vercel → Project → Settings → Environment Variables:
   - Pega el private key tal cual (Vercel lo guarda como string; el código soporta `\n`).
 - `ALLOWED_ORIGIN` (opcional pero recomendado)
   - Ej: `https://tu-dominio.com`
+- `STUDIO_NOTIFICATION_EMAIL` (recomendado)
+  - Email del studio que debe recibir la confirmación (ej: `andrea@spiralmstudio.com`).
 
 ### 4) Endpoint
 
@@ -45,4 +47,9 @@ Payload (JSON):
 
 - Si el evento se crea correctamente, se muestra un link **“VER EN GOOGLE CALENDAR”**.
 - Si falla, se usa el fallback existente de `mailto:` para no perder la reserva.
+
+### 6) Emails de confirmación (cliente + studio)
+
+El endpoint crea el evento con `attendees` (cliente + studio) y usa `sendUpdates: "all"`,
+lo que hace que **Google Calendar envíe automáticamente** los correos de invitación/confirmación.
 

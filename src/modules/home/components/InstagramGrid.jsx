@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../styles/home.module.css';
-import ElfsightInstagramFeed from '../../../components/ElfsightInstagramFeed';
+import InstagramFeedGrid from '../../../components/InstagramFeedGrid';
 
 const InstagramGrid = () => {
   return (
@@ -16,7 +16,7 @@ const InstagramGrid = () => {
         </a>
       </div>
       <div className={styles.instagramGrid}>
-        <ElfsightInstagramFeed />
+        <InstagramFeedGrid />
       </div>
     </section>
   );

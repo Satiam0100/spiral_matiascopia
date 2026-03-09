@@ -107,7 +107,11 @@ const Navigation = () => {
           aria-expanded={isMenuOpen}
           aria-controls="mobile-nav-drawer"
         >
-          MENU
+          <span className={styles.hamburgerIcon} aria-hidden="true">
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLine} />
+          </span>
         </button>
 
         <ul className={styles.navLeft}>

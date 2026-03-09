@@ -60,6 +60,14 @@ const normalizePhoneDigits = (value) => value.replace(/[^\d]/g, '');
 
 const stripNewlines = (value) => value.replace(/[\r\n]+/g, ' ');
 
+const toYmdLocal = (d) => {
+  if (!d) return '';
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
 const normalizeName = (value, maxLen = 40) => {
   const cleaned = stripNewlines(String(value ?? ''))
     .replace(/[^A-Za-z\u00C0-\u024F\s'-]/g, '')
@@ -169,6 +177,9 @@ const BookingSlide = React.memo(function BookingSlide({
   setFormValues,
   onContinue,
   mailtoHref,
+  isSubmitting,
+  submitError,
+  calendarLink,
 }) {
   const isOpen = activePlan === plan;
   const planTitle = plan === 'weekday' ? 'STUDIO RENTAL WEEKDAY' : 'STUDIO RENTAL WEEKEND';
@@ -241,8 +252,8 @@ const BookingSlide = React.memo(function BookingSlide({
               </div>
 
               <div className={styles.calendarGrid} role="grid" aria-label="Month days">
-                {dayHeaders.map((d) => (
-                  <div key={d} className={styles.calendarDow} aria-hidden="true">
+                {dayHeaders.map((d, idx) => (
+                  <div key={`${d}-${idx}`} className={styles.calendarDow} aria-hidden="true">
                     {d}
                   </div>
                 ))}
@@ -478,10 +489,22 @@ const BookingSlide = React.memo(function BookingSlide({
             type="button"
             className={styles.continueButton}
             onClick={onContinue}
-            disabled={!validation.isValid}
+            disabled={!validation.isValid || isSubmitting}
           >
-            CONTINUE TO PAYMENT
+            {isSubmitting ? 'SAVING…' : 'CONTINUE TO PAYMENT'}
           </button>
+
+          {submitError ? (
+            <div className={styles.formSummaryError} role="alert">
+              {submitError}
+            </div>
+          ) : null}
+
+          {calendarLink ? (
+            <a className={styles.bookingEmail} href={calendarLink} target="_blank" rel="noreferrer">
+              VER EN GOOGLE CALENDAR
+            </a>
+          ) : null}
 
           <a className={styles.bookingEmail} href={mailtoHref}>
             {BOOK_EMAIL.toUpperCase()}
@@ -506,6 +529,9 @@ const BookNowModule = () => {
     email: '',
   });
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [calendarLink, setCalendarLink] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
 
   const slideCount = carouselSlides.length;
   const activeSlide = carouselSlides[slideIdx] ?? carouselSlides[0];
@@ -684,7 +710,41 @@ const BookNowModule = () => {
   const onContinue = () => {
     setSubmitAttempted(true);
     if (!validation.isValid) return;
-    window.location.href = mailtoHref;
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setCalendarLink(null);
+
+    const payload = {
+      plan: activePlan,
+      hours,
+      date: toYmdLocal(selectedDate),
+      time: selectedTime,
+      firstName: normalizeName(formValues.firstName),
+      lastName: normalizeName(formValues.lastName),
+      phone: normalizePhone(formValues.phone),
+      email: normalizeEmail(formValues.email),
+    };
+
+    fetch('/api/create-booking-event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(async (r) => {
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok || !data?.ok) {
+          throw new Error(data?.error || 'No se pudo crear el evento en el calendario.');
+        }
+        if (data?.htmlLink) setCalendarLink(data.htmlLink);
+      })
+      .catch((e) => {
+        setSubmitError(e?.message || 'No se pudo crear el evento en el calendario.');
+        // Fallback: keep existing mailto flow so the booking isn't lost.
+        window.location.href = mailtoHref;
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const timeSlots = useMemo(
@@ -772,6 +832,9 @@ const BookNowModule = () => {
             setFormValues={setFormValues}
             onContinue={onContinue}
             mailtoHref={mailtoHref}
+            isSubmitting={isSubmitting}
+            submitError={submitError}
+            calendarLink={calendarLink}
           />
 
           <div className={styles.divider} aria-hidden />
@@ -816,6 +879,9 @@ const BookNowModule = () => {
             setFormValues={setFormValues}
             onContinue={onContinue}
             mailtoHref={mailtoHref}
+            isSubmitting={isSubmitting}
+            submitError={submitError}
+            calendarLink={calendarLink}
           />
         </div>
       </section>

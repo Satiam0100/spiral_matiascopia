@@ -275,7 +275,7 @@
   width: min(920px, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 1.6rem;
+  gap: 1.35rem;
   justify-items: center;
 }
 
@@ -287,7 +287,7 @@
 
 .ctaCaps {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-loverica, var(--font-display));
   font-size: clamp(2.75rem, 6.6vw, 4.1rem);
   font-weight: 400;
   letter-spacing: 0.12em;
@@ -296,7 +296,7 @@
 
 .ctaScript {
   display: block;
-  margin-top: 0.45rem;
+  margin-top: 0.2rem;
   font-family: 'Luxurious Script', cursive;
   font-size: clamp(3.85rem, 9.6vw, 6.1rem);
   font-weight: 400;
